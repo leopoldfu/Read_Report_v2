@@ -75,20 +75,30 @@ def get_topics(model_tuple, text_or_tokens, media_name="edh"):
 
     # Preprocessing
     if isinstance(text_or_tokens, str):
-         # Normalize simple splitting; assumes space-separated if string
-         tokens = text_or_tokens.split() 
+         # Normalize using jieba for Chinese segmentation
+         import jieba
+         tokens = list(jieba.cut(text_or_tokens)) 
     else:
         tokens = text_or_tokens
 
     clean = clean_tokens(tokens, media_name)
     
+    print(f"\n--- Debug Inference for '{media_name}' ---")
+    print(f"Input Tokens (Cleaned): {clean}")
+
     if len(clean) == 0:
+        print("Result: No valid tokens.")
         return [{"topic_id": -1, "score": 0.0, "words": ["No valid tokens found (all filtered or unknown)"]}]
 
     bow = dictionary.doc2bow(clean)
+    print(f"BoW Vector (ID, Count): {bow}")
+    
     topic_distResult = model.get_document_topics(bow, minimum_probability=0.01)
+    print(f"Topic Distribution: {topic_distResult}")
     
     sorted_topics = sorted(topic_distResult, key=lambda x: x[1], reverse=True)
+    print(f"Sorted Top 5: {sorted_topics[:5]}")
+    print("------------------------------------------\n")
     
     results = []
     for tid, score in sorted_topics[:5]: 

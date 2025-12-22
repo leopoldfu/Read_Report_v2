@@ -11,3 +11,4 @@ wordcloud
 scipy<1.13.0
 
 google-cloud-storage
+jieba
