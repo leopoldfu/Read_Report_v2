@@ -1,0 +1,13 @@
+Flask==3.0.0
+gunicorn==21.2.0
+python-dotenv==1.0.0
+gensim==4.3.2
+nltk==3.8.1
+numpy==1.26.4
+pandas
+tqdm
+pyLDAvis
+wordcloud
+scipy<1.13.0
+
+google-cloud-storage

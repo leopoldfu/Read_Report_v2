@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Run Flask Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>LDA Topic Predictor</h1>
+        <p>Enter text to identify its topics.</p>
+
+        <div style="margin-bottom: 15px; text-align: left;">
+            <label for="mediaSelect"><strong>Select Media Source:</strong></label>
+            <select id="mediaSelect" style="padding: 5px; margin-left: 10px;">
+                <option value="edh" selected>Everyday Health (EDH)</option>
+                <!-- Add other options here later -->
+            </select>
+            <button id="trainBtn" style="margin-left: 10px; background-color: #34a853;">Train Model for Selected
+                Media</button>
+            <span id="trainStatus" style="margin-left: 10px; font-size: 0.9em; color: #666;"></span>
+            <div id="modelInfo" style="margin: 10px 0 0 0; font-size: 0.9em; font-weight: bold; color: #444;"></div>
+        </div>
+
+        <textarea id="textInput" placeholder="Enter text here..." rows="4"
+            style="width: 100%; margin: 10px 0; padding: 10px;"></textarea>
+        <button id="predictBtn">Analyze Topics</button>
+
+        <div id="results" style="margin-top: 20px; text-align: left;"></div>
+
+        <!-- Stopword Refinement Panel -->
+        <div id="stopwordPanel" style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; display: none;">
+            <h3>Refine Topics</h3>
+            <p>Click on irrelevant words in the results above to ban them.</p>
+            <div id="pendingStopwords" style="margin: 10px 0; color: #d93025;"></div>
+            <button id="updateStopwordsBtn" style="background-color: #d93025; color: white; display: none;">Ban Words &
+                Retrain</button>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>
