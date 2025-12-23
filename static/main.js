@@ -237,4 +237,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// --- Modal Logic ---
+window.openModal = function () {
+    document.getElementById('overviewModal').style.display = 'flex';
+    loadModelOverview();
+}
+
+window.closeModal = function () {
+    document.getElementById('overviewModal').style.display = 'none';
+}
+
+window.closeModalByOverlay = function (event) {
+    if (event.target === document.getElementById('overviewModal')) {
+        closeModal();
+    }
+}
+
+window.loadModelOverview = async function () {
+    const media = document.getElementById('mediaSelect').value;
+    const container = document.getElementById('overview-results');
+
+    container.innerHTML = "Loading topics...";
+
+    try {
+        const response = await fetch(`/topics/${media}`);
+        const data = await response.json();
+
+        if (data.success) {
+            let html = `<h3>All Topics for ${media} (Top 40 Keywords)</h3>`;
+            data.topics.forEach(topic => {
+                html += `<div class="topic-box">
+                    <strong>Topic ${topic.topic_id}</strong><br>`;
+
+                topic.words.forEach((word, index) => {
+                    html += `<span class="topic-word" ondblclick="toggleStopword(this, '${word}')" title="Double-click to ban">${word}</span>`;
+                    if (index < topic.words.length - 1) {
+                        html += "、";
+                    }
+                });
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = `<p style="color:red;">Error: ${data.message}</p>`;
+        }
+    } catch (e) {
+        container.innerHTML = `<p style="color:red;">Error loading topics: ${e}</p>`;
+    }
+}
 

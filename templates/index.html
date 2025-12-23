@@ -30,14 +30,23 @@
         <button id="predictBtn">Analyze Topics</button>
 
         <div id="results" style="margin-top: 20px; text-align: left;"></div>
-
-        <!-- Stopword Refinement Panel -->
         <div id="stopwordPanel" style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; display: none;">
             <h3>Refine Topics</h3>
             <p>Click on irrelevant words in the results above to ban them.</p>
             <div id="pendingStopwords" style="margin: 10px 0; color: #d93025;"></div>
             <button id="updateStopwordsBtn" style="background-color: #d93025; color: white; display: none;">Ban Words &
                 Retrain</button>
+        </div>
+        <button onclick="openModal()" style="background-color: #5f6368; color: white; margin-top: 10px;">Show Model
+            Overview</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="overviewModal" class="modal-overlay" onclick="closeModalByOverlay(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2>Model Overview</h2>
+            <div id="overview-results"></div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='main.js') }}"></script>

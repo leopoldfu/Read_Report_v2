@@ -144,6 +144,20 @@ def seed_stopwords():
     except Exception as e:
          return jsonify({"success": False, "message": str(e)}), 500
 
+@app.route('/topics/<media>', methods=['GET'])
+def get_topics_overview(media):
+    try:
+        model_tuple = get_or_load_model(media)
+        if model_tuple[0] is None:
+            return jsonify({"success": False, "message": f"Model for {media} not loaded/found."}), 404
+        
+        # Get all topics with top 40 keywords
+        all_topics = model_utils.get_all_topics(model_tuple, topn=40)
+        return jsonify({"success": True, "topics": all_topics, "media": media})
+    except Exception as e:
+        print(f"Error fetching topics for {media}: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)

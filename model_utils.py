@@ -111,3 +111,27 @@ def get_topics(model_tuple, text_or_tokens, media_name="edh"):
         })
         
     return results
+
+def get_all_topics(model_tuple, topn=40):
+    """
+    Returns a list of all topics with their top N words.
+    """
+    model, dictionary = model_tuple
+    if model is None:
+        return []
+    
+    # show_topics(num_topics=-1) returns all topics
+    raw_topics = model.show_topics(num_topics=-1, num_words=topn, formatted=False)
+    
+    topics = []
+    # raw_topics is list of (topic_id, [(word, prob), ...])
+    # However, show_topics sometimes doesn't sort by ID. Let's ensure it is sorted.    
+    sorted_raw = sorted(raw_topics, key=lambda x: x[0])
+
+    for tid, words_probs in sorted_raw:
+        words = [w for w, p in words_probs]
+        topics.append({
+            "topic_id": tid,
+            "words": words
+        })
+    return topics
